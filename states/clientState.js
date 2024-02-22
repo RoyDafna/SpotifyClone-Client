@@ -1,9 +1,10 @@
 import { computed, makeObservable, observable, action, autorun } from "mobx";
+import axios from "axios";
 
 export class clientState {
   currentSong = {
-    name: "The Beatles - Here Comes The Sun (2019 Mix)",
-    songEmbed: "https://www.youtube.com/embed/KQetemT1sWc",
+    name: "",
+    songEmbed: "",
   };
   contentOnScreen = [];
 
@@ -26,6 +27,9 @@ export class clientState {
   }
 
   get songEmpty() {
-    return this.currentSong.name.length === 0 || this.currentSong.songEmbed.length === 0;
+    return (
+      this.currentSong.name.length === 0 ||
+      this.currentSong.songEmbed.length === 0
+    );
   }
 }
