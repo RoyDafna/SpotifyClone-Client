@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 const Login = observer(({ loginStateObj }) => {
   const [username, setUsername] = useState("");
@@ -32,17 +33,10 @@ const Login = observer(({ loginStateObj }) => {
         >
           Register
         </button>
-        <p
-          style={{
-            color: "red",
-            border: true,
-            borderWidth: "2px",
-            borderColor: "red",
-          }}
-          hidden={loginStateObj.firstLoginAttempt}
-        >
-          Wrong username or password
-        </p>
+        <ErrorMessage
+          message="Wrong username or password"
+          trigger={!loginStateObj.firstLoginAttempt}
+        />
       </div>
     </>
   );

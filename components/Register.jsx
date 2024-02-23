@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 const Register = observer(({ loginStateObj }) => {
   const [username, setUsername] = useState("");
@@ -32,17 +33,10 @@ const Register = observer(({ loginStateObj }) => {
         >
           Login
         </button>
-        <p
-          style={{
-            color: "red",
-            border: true,
-            borderWidth: "2px",
-            borderColor: "red",
-          }}
-          hidden={!loginStateObj.userExists}
-        >
-          User with this username already exists
-        </p>
+        <ErrorMessage
+          message="User with this username already exists"
+          trigger={loginStateObj.userExists}
+        />
       </div>
     </>
   );
