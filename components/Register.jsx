@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
-const Login = observer(({ loginStateObj }) => {
+const Register = observer(({ loginStateObj }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
     <>
-      <div hidden={loginStateObj.loggedIn || !loginStateObj.loginOrRegister}>
-        <h2>Login</h2>
+      <div hidden={loginStateObj.loggedIn || loginStateObj.loginOrRegister}>
+        <h2>Register</h2>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -20,17 +20,17 @@ const Login = observer(({ loginStateObj }) => {
         />
         <button
           onClick={() => {
-            loginStateObj.setUser(username, password);
+            loginStateObj.registerUser(username, password);
           }}
         >
-          Login
+          Register
         </button>
         <button
           onClick={() => {
             loginStateObj.toggleLoginOrRegister();
           }}
         >
-          Register
+          Login
         </button>
         <p
           style={{
@@ -39,12 +39,12 @@ const Login = observer(({ loginStateObj }) => {
             borderWidth: "2px",
             borderColor: "red",
           }}
-          hidden={loginStateObj.firstLoginAttempt}
+          hidden={!loginStateObj.userExists}
         >
-          Wrong username or password
+          User with this username already exists
         </p>
       </div>
     </>
   );
 });
-export default Login;
+export default Register;
