@@ -14,10 +14,17 @@ export class loginState {
       userExists: observable,
       loginOrRegister: observable,
       setUser: action,
+      logOut: action,
       toggleLoginOrRegister: action,
       registerUser: action,
       loggedIn: computed,
     });
+  }
+
+  logOut() {
+    this.user.username = "";
+    this.user.password = "";
+    this.firstLoginAttempt = true;
   }
 
   toggleLoginOrRegister() {
