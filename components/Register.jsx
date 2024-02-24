@@ -2,12 +2,12 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 
-const Register = observer(({ loginStateObj }) => {
+const Register = observer(({ songsStateObj }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
     <>
-      <div hidden={loginStateObj.loggedIn || loginStateObj.loginOrRegister}>
+      <div hidden={songsStateObj.loggedIn || songsStateObj.loginOrRegister}>
         <h2>Register</h2>
         <input
           value={username}
@@ -21,21 +21,23 @@ const Register = observer(({ loginStateObj }) => {
         />
         <button
           onClick={() => {
-            loginStateObj.registerUser(username, password);
+            songsStateObj.registerUser(username, password);
+            setUsername("");
+            setPassword("");
           }}
         >
           Register
         </button>
         <button
           onClick={() => {
-            loginStateObj.toggleLoginOrRegister();
+            songsStateObj.toggleLoginOrRegister();
           }}
         >
           Login
         </button>
         <ErrorMessage
           message="User with this username already exists"
-          trigger={loginStateObj.userExists}
+          trigger={songsStateObj.userExists}
         />
       </div>
     </>

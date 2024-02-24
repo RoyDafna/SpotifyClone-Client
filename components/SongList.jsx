@@ -2,13 +2,12 @@ import { observer } from "mobx-react-lite";
 import SongCard from "./SongCard";
 import ErrorMessage from "./ErrorMessage";
 
-const SongList = observer(({ songsStateObj, loginStateObj }) => {
-    console.log(songsStateObj.songsOnScreen)
+const SongList = observer(({ songsStateObj }) => {
   return (
     <>
-      <div hidden={!songsStateObj.showSongs || !loginStateObj.loggedIn}>
+      <div hidden={!songsStateObj.showSongs}>
         <ErrorMessage
-          message="No songs to show"
+          message={"No " + songsStateObj.searchMode + " to Show"}
           trigger={songsStateObj.songsOnScreen.length == 0}
         />
         {songsStateObj.songsOnScreen.map((song) => (

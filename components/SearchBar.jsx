@@ -1,34 +1,46 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
-const SearchBar = observer(({ songsStateObj, loginStateObj }) => {
+const SearchBar = observer(({ songsStateObj }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const searchSong = (searchTerm) => {
+
+  function search(searchTerm) {
+    if (songsStateObj.searchMode == "Songs") {
+      searchSong(searchTerm);
+    } else if (songsStateObj.searchMode == "Artists") {
+    } else if (songsStateObj.searchMode == "Albums") {
+    }
+
+    setSearchTerm("");
+  }
+
+  function searchSong(searchTerm) {
     songsStateObj.searchSongsByName(searchTerm);
-  };
+  }
+
   return (
     <>
-      <div hidden={!loginStateObj.loggedIn}>
+      <div hidden={!songsStateObj.loggedIn}>
         <input
-          hidden={!loginStateObj.loggedIn}
-          placeholder="Search Songs"
+          hidden={!songsStateObj.loggedIn}
+          placeholder={"Search " + songsStateObj.searchMode}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => {
             if (e.key == "Enter") {
-              searchSong(searchTerm);
+              search(searchTerm);
             }
           }}
         />
         <button
           onClick={() => {
-            searchSong(searchTerm);
+            search(searchTerm);
           }}
         >
           Search
         </button>
-        <br/>
-        <br/>
+        <br />
+        <br />
       </div>
     </>
   );

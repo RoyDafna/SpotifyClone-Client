@@ -11,10 +11,12 @@ export class songsState {
   firstLoginAttempt = true;
   userExists = false;
   loginOrRegister = true; //true = login, false = register
+  searchMode = "Songs"
 
   constructor() {
     makeObservable(this, {
       currentSongName: observable,
+      searchMode: observable,
       currentSongEmbed: observable,
       songsOnScreen: observable,
       playSong: observable,
@@ -22,6 +24,7 @@ export class songsState {
       setCurrentSong: action,
       hideSongs: action,
       searchSongsByName: action,
+      setSearchMode: action,
       user: observable,
       firstLoginAttempt: observable,
       userExists: observable,
@@ -36,6 +39,10 @@ export class songsState {
 
   hideSongs() {
     this.showSongs = false;
+  }
+
+  setSearchMode(mode) {
+    this.searchMode = mode;
   }
 
   setCurrentSong(name, songEmbed) {
@@ -63,6 +70,8 @@ export class songsState {
     this.user.username = "";
     this.user.password = "";
     this.firstLoginAttempt = true;
+    this.showSongs = false;
+    this.playSong = false;
   }
 
   toggleLoginOrRegister() {

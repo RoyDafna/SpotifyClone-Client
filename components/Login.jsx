@@ -2,12 +2,12 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 
-const Login = observer(({ loginStateObj }) => {
+const Login = observer(({ songsStateObj }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
     <>
-      <div hidden={loginStateObj.loggedIn || !loginStateObj.loginOrRegister}>
+      <div hidden={songsStateObj.loggedIn || !songsStateObj.loginOrRegister}>
         <h2>Login</h2>
         <input
           value={username}
@@ -21,21 +21,23 @@ const Login = observer(({ loginStateObj }) => {
         />
         <button
           onClick={() => {
-            loginStateObj.setUser(username, password);
+            songsStateObj.setUser(username, password);
+            setUsername("");
+            setPassword("");
           }}
         >
           Login
         </button>
         <button
           onClick={() => {
-            loginStateObj.toggleLoginOrRegister();
+            songsStateObj.toggleLoginOrRegister();
           }}
         >
           Register
         </button>
         <ErrorMessage
           message="Wrong username or password"
-          trigger={!loginStateObj.firstLoginAttempt}
+          trigger={!songsStateObj.firstLoginAttempt}
         />
       </div>
     </>

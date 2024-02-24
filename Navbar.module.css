@@ -18,7 +18,7 @@
 
 /* Change the color of links on hover */
 .topnav button:hover {
-  background-color: #0465aa;
+  background-color: #b4daf5;
   color: black;
   cursor: pointer;
 }
