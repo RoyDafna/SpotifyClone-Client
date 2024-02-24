@@ -42,7 +42,17 @@ export class songsState {
     this.showSongs = false;
   }
 
-  getTopTenSongs() {}
+  getTopTenSongs = async () => {
+    try {
+      const url = "http://localhost:3001/api/songs/topTen";
+      await axios.get(url).then((res) => {
+        this.songsOnScreen = res.data;
+        this.showSongs = true;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   setSearchMode(mode) {
     this.searchMode = mode;
@@ -52,7 +62,7 @@ export class songsState {
     this.playSong = true;
     this.currentSongName = name;
     this.currentSongEmbed = songEmbed;
-    
+
     try {
       const url = "http://localhost:3001/api/songs/" + songID;
       await axios.post(url);

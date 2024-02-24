@@ -17,9 +17,9 @@ const SearchBar = observer(({ songsStateObj }) => {
   return (
     <>
       <div hidden={!songsStateObj.loggedIn}>
-      <button onClick={()=>{
+      <button hidden={songsStateObj.searchMode != "Songs"} onClick={()=>{
         songsStateObj.getTopTenSongs();
-      }}>Top Ten Songs</button>
+      }}>Top Ten Songs</button> <br/>
         <input
           hidden={!songsStateObj.loggedIn}
           placeholder={"Search " + songsStateObj.searchMode}
