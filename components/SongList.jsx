@@ -17,7 +17,15 @@ const SongList = observer(({ songsStateObj }) => {
               songEmbed: song.songEmbed,
               pictureURL: song.pictureURL,
               genre: song.genre,
-              releaseYear: new Date(song.releaseDate).getFullYear(),
+              releaseDate: new Date(song.releaseDate).toLocaleDateString(
+                "en-us",
+                {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                }
+              ),
               songID: song._id,
             }}
             songsStateObj={songsStateObj}

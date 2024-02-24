@@ -23,7 +23,7 @@ const SongCard = observer(({ songDetails, songsStateObj }) => {
           <p>
             {songDetails.songName} <br />
             {songDetails.genre} <br />
-            {/*songDetails.releaseYear*/}
+            {"Entered Site at " + songDetails.releaseDate}
           </p>
         </button>
         <br />
