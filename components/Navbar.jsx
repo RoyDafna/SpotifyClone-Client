@@ -5,39 +5,43 @@ const Navbar = observer(({ styles, songsStateObj }) => {
     <>
       <div className={styles.topnav}>
         <button
+          disabled={!songsStateObj.loggedIn}
           className={songsStateObj.searchMode == "Songs" ? styles.active : ""}
           onClick={() => {
             if (songsStateObj.searchMode != "Songs") {
               songsStateObj.setSearchMode("Songs");
-              songsStateObj.hideSongs();
+              songsStateObj.hideContent();
             }
           }}
         >
           Songs
         </button>
         <button
+          disabled={!songsStateObj.loggedIn}
           className={songsStateObj.searchMode == "Artists" ? styles.active : ""}
           onClick={() => {
             if (songsStateObj.searchMode != "Artists") {
               songsStateObj.setSearchMode("Artists");
-              songsStateObj.hideSongs();
+              songsStateObj.hideContent();
             }
           }}
         >
           Artists
         </button>
         <button
+          disabled={!songsStateObj.loggedIn}
           className={songsStateObj.searchMode == "Albums" ? styles.active : ""}
           onClick={() => {
             if (songsStateObj.searchMode != "Albums") {
               songsStateObj.setSearchMode("Albums");
-              songsStateObj.hideSongs();
+              songsStateObj.hideContent();
             }
           }}
         >
           Albums
         </button>
         <button
+          disabled={!songsStateObj.loggedIn}
           style={{ float: "right" }}
           onClick={() => {
             songsStateObj.logOut();

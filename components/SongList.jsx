@@ -5,18 +5,19 @@ import ErrorMessage from "./ErrorMessage";
 const SongList = observer(({ songsStateObj }) => {
   return (
     <>
-      <div hidden={!songsStateObj.showSongs}>
+      <div hidden={!songsStateObj.showContent}>
         <ErrorMessage
           message={"No " + songsStateObj.searchMode + " to Show"}
-          trigger={songsStateObj.songsOnScreen.length == 0}
+          trigger={songsStateObj.contentOnScreen.length == 0}
         />
-        {songsStateObj.songsOnScreen.map((song) => (
+        {songsStateObj.contentOnScreen.map((song) => (
           <SongCard
             songDetails={{
               songName: song.name,
               songEmbed: song.songEmbed,
               pictureURL: song.pictureURL,
               genre: song.genre,
+              releaseYear: new Date(song.releaseDate).getFullYear(),
               songID: song._id,
             }}
             songsStateObj={songsStateObj}

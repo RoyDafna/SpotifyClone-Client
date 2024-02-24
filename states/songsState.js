@@ -4,28 +4,35 @@ import axios from "axios";
 export class songsState {
   currentSongName = "";
   currentSongEmbed = "";
-  songsOnScreen = [];
+  contentOnScreen = [];
   playSong = false;
-  showSongs = false;
-  user = { username: "", password: "" };
+  showContent = false;
+  user = { username: "", password: "", id: "" };
   firstLoginAttempt = true;
   userExists = false;
+  likedSongs = [];
+
   loginOrRegister = true; //true = login, false = register
-  searchMode = "Songs";
+  searchMode = "";
 
   constructor() {
     makeObservable(this, {
+      likedSongs: observable,
       currentSongName: observable,
       searchMode: observable,
       currentSongEmbed: observable,
-      songsOnScreen: observable,
+      contentOnScreen: observable,
       playSong: observable,
-      showSongs: observable,
+      showContent: observable,
       setCurrentSong: action,
-      hideSongs: action,
+      likeSong: action,
+      hideContent: action,
       searchSongsByName: action,
       setSearchMode: action,
+      getLikedSongs: action,
+      clearLikedSongs: action,
       getTopTenSongs: action,
+      searchArtistByName: action,
       user: observable,
       firstLoginAttempt: observable,
       userExists: observable,
@@ -35,19 +42,55 @@ export class songsState {
       toggleLoginOrRegister: action,
       registerUser: action,
       loggedIn: computed,
+      isLikedSong: action,
     });
   }
 
-  hideSongs() {
-    this.showSongs = false;
+  isLikedSong(songID) {
+    return this.likedSongs.includes(songID);
+  }
+
+  likeSong = async (songID) => {
+    try {
+      let url = "";
+      if (this.isLikedSong(songID)) {
+        url = "http://localhost:3001/api/users/unlikeSong";
+        this.likedSongs.splice(this.likedSongs.indexOf(songID))
+      } else {
+        url = "http://localhost:3001/api/users/likeSong";
+        this.likedSongs.push(songID);
+      }
+      await axios.post(url, { userID: this.user.id, songID: songID });
+    } catch (err) {
+      console.log(e);
+    }
+  };
+
+  hideContent() {
+    this.showContent = false;
   }
 
   getTopTenSongs = async () => {
     try {
       const url = "http://localhost:3001/api/songs/topTen";
       await axios.get(url).then((res) => {
-        this.songsOnScreen = res.data;
-        this.showSongs = true;
+        this.contentOnScreen = res.data;
+        this.showContent = true;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  clearLikedSongs() {
+    this.likedSongs = [];
+  }
+
+  getLikedSongs = async () => {
+    try {
+      const url = "http://localhost:3001/api/users/likedSongs/" + this.user.id;
+      axios.get(url).then((res) => {
+        this.likedSongs = res.data[0].likedSongsIDs;
       });
     } catch (e) {
       console.log(e);
@@ -71,14 +114,29 @@ export class songsState {
     }
   };
 
+  searchArtistByName = async (searchTerm) => {
+    try {
+      const url = "http://localhost:3001/api/artists?name=" + searchTerm;
+      await axios.get(url).then((res) => {
+        console.log(url);
+        if (res.status.toFixed() == 200) {
+          this.contentOnScreen = res.data;
+          this.showContent = true;
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   searchSongsByName = async (searchTerm) => {
     try {
       const url = "http://localhost:3001/api/songs/?name=" + searchTerm;
       await axios.get(url).then((res) => {
         console.log(url);
         if (res.status.toFixed() == 200) {
-          this.songsOnScreen = res.data;
-          this.showSongs = true;
+          this.contentOnScreen = res.data;
+          this.showContent = true;
         }
       });
     } catch (e) {
@@ -89,9 +147,12 @@ export class songsState {
   logOut() {
     this.user.username = "";
     this.user.password = "";
+    this.user.id = "";
     this.firstLoginAttempt = true;
-    this.showSongs = false;
+    this.showContent = false;
     this.playSong = false;
+    this.likedSongs = [];
+    this.searchMode = "";
   }
 
   toggleLoginOrRegister() {
@@ -109,6 +170,9 @@ export class songsState {
         if (res.status.toFixed() == 200 && res.data.length > 0) {
           this.user.username = res.data[0].username;
           this.user.password = res.data[0].password;
+          this.user.id = res.data[0]._id;
+          this.getLikedSongs();
+          this.searchMode = "Songs"
         }
         this.firstLoginAttempt = false;
       });
