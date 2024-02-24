@@ -8,7 +8,8 @@ const SongCard = observer(({ songDetails, songsStateObj }) => {
         onClick={() => {
           songsStateObj.setCurrentSong(
             songDetails.songName,
-            songDetails.songEmbed
+            songDetails.songEmbed,
+            songDetails.songID,
           );
         }}
       >

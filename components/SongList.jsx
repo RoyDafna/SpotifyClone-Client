@@ -17,6 +17,7 @@ const SongList = observer(({ songsStateObj }) => {
               songEmbed: song.songEmbed,
               pictureURL: song.pictureURL,
               genre: song.genre,
+              songID: song._id,
             }}
             songsStateObj={songsStateObj}
           />

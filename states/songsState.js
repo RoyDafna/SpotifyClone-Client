@@ -11,7 +11,7 @@ export class songsState {
   firstLoginAttempt = true;
   userExists = false;
   loginOrRegister = true; //true = login, false = register
-  searchMode = "Songs"
+  searchMode = "Songs";
 
   constructor() {
     makeObservable(this, {
@@ -25,6 +25,7 @@ export class songsState {
       hideSongs: action,
       searchSongsByName: action,
       setSearchMode: action,
+      getTopTenSongs: action,
       user: observable,
       firstLoginAttempt: observable,
       userExists: observable,
@@ -41,15 +42,24 @@ export class songsState {
     this.showSongs = false;
   }
 
+  getTopTenSongs() {}
+
   setSearchMode(mode) {
     this.searchMode = mode;
   }
 
-  setCurrentSong(name, songEmbed) {
+  setCurrentSong = async (name, songEmbed, songID) => {
     this.playSong = true;
     this.currentSongName = name;
     this.currentSongEmbed = songEmbed;
-  }
+    
+    try {
+      const url = "http://localhost:3001/api/songs/" + songID;
+      await axios.post(url);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   searchSongsByName = async (searchTerm) => {
     try {
