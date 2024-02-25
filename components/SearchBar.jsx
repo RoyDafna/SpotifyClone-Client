@@ -10,6 +10,7 @@ const SearchBar = observer(({ songsStateObj }) => {
     } else if (songsStateObj.searchMode == "Artists") {
         songsStateObj.searchArtistsByName(searchTerm);
     } else if (songsStateObj.searchMode == "Albums") {
+        songsStateObj.searchAlbumsByName(searchTerm);
     }
 
     setSearchTerm("");

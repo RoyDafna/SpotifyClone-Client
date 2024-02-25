@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import SongCard from "./SongCard";
 import ErrorMessage from "./ErrorMessage";
 import ArtistCard from "./ArtistCard";
+import AlbumCard from "./AlbumCard";
 
 const ContentList = observer(({ songsStateObj }) => {
   if (songsStateObj.contentMode == "Songs") {
@@ -62,7 +63,37 @@ const ContentList = observer(({ songsStateObj }) => {
       </>
     );
   } else if (songsStateObj.contentMode == "Albums") {
-    return <></>;
+    return (
+      <>
+        <div hidden={!songsStateObj.showContent}>
+          <ErrorMessage
+            message={"No Albums to Show"}
+            trigger={songsStateObj.contentOnScreen.length == 0}
+          />
+          {songsStateObj.contentOnScreen.map((album) => (
+            <AlbumCard
+              albumDetails={{
+                albumName: album.name,
+                pictureURL: album.pictureURL,
+                genre: album.genre,
+                artistName: album.artistName,
+                releaseDate: new Date(album.releaseDate).toLocaleDateString(
+                  "en-us",
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }
+                ),
+                albumID: album._id,
+              }}
+              songsStateObj={songsStateObj}
+            />
+          ))}
+        </div>
+      </>
+    );
   }
 });
 

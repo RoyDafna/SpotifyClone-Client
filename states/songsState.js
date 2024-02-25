@@ -28,6 +28,7 @@ export class songsState {
       showContent: observable,
       setCurrentSong: action,
       setContentMode: action,
+      searchAlbumSongs: action,
       likeSong: action,
       hideContent: action,
       searchSongsByName: action,
@@ -47,12 +48,62 @@ export class songsState {
       registerUser: action,
       loggedIn: computed,
       isLikedSong: action,
+      searchAlbumsByName: action,
+      getArtistNameByID: action,
     });
   }
 
   setContentMode(mode) {
     this.contentMode = mode;
   }
+
+  getArtistNameByID = async (artistID) => {
+    console.log("yep");
+    try {
+      let name = "";
+      const url = "http://localhost:3001/api/artists/" + artistID;
+      await axios.get(url).then((res) => {
+        name = res.data.name;
+      });
+      return name;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  searchAlbumsByName = async (albumName) => {
+    try {
+      const url = "http://localhost:3001/api/albums/" + albumName;
+      await axios.get(url).then((res) => {
+        this.contentOnScreen = res.data;
+        this.contentOnScreen.map(async (album) => {
+          album.artistName = await this.getArtistNameByID(album.artistID);
+        });
+        console.log(this.contentOnScreen.length);
+        this.contentMode = "Albums";
+        this.showContent = true;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  searchAlbumSongs = async (albumID) => {
+    try {
+      const url = "http://localhost:3001/api/albums/songs/" + albumID;
+      console.log(url);
+      await axios.get(url).then((res) => {
+        this.contentOnScreen = [];
+        res.data.map((song) => {
+          this.contentOnScreen.push(song.song);
+        });
+        this.contentMode = "Songs";
+      });
+      console.log(this.contentOnScreen.length);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   isLikedSong(songID) {
     return this.likedSongs.includes(songID);
@@ -69,7 +120,7 @@ export class songsState {
         this.likedSongs.push(songID);
       }
       await axios.post(url, { userID: this.user.id, songID: songID });
-    } catch (err) {
+    } catch (e) {
       console.log(e);
     }
   };
@@ -158,7 +209,7 @@ export class songsState {
         if (res.status.toFixed() == 200) {
           this.contentOnScreen = res.data;
           this.showContent = true;
-          this.contentMode = "Songs"
+          this.contentMode = "Songs";
         }
       });
     } catch (e) {
