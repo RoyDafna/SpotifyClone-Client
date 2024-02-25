@@ -6,11 +6,11 @@ const SearchBar = observer(({ songsStateObj }) => {
 
   function search(searchTerm) {
     if (songsStateObj.searchMode == "Songs") {
-        songsStateObj.searchSongsByName(searchTerm);
+      songsStateObj.searchSongsByName(searchTerm);
     } else if (songsStateObj.searchMode == "Artists") {
-        songsStateObj.searchArtistsByName(searchTerm);
+      songsStateObj.searchArtistsByName(searchTerm);
     } else if (songsStateObj.searchMode == "Albums") {
-        songsStateObj.searchAlbumsByName(searchTerm);
+      songsStateObj.searchAlbumsByName(searchTerm);
     }
 
     setSearchTerm("");
@@ -19,9 +19,23 @@ const SearchBar = observer(({ songsStateObj }) => {
   return (
     <>
       <div hidden={!songsStateObj.loggedIn}>
-      <button hidden={songsStateObj.searchMode != "Songs"} onClick={()=>{
-        songsStateObj.getTopTenSongs();
-      }}>Top Ten Songs</button> <br/>
+        <button
+          hidden={songsStateObj.searchMode != "Songs"}
+          onClick={() => {
+            songsStateObj.getTopTenSongs();
+          }}
+        >
+          Top Ten Songs
+        </button>
+        <button
+          hidden={songsStateObj.searchMode != "Albums"}
+          onClick={() => {
+            songsStateObj.getTopTenAlbums();
+          }}
+        >
+          Top Ten Albums
+        </button>
+        <br />
         <input
           hidden={!songsStateObj.loggedIn}
           placeholder={"Search " + songsStateObj.searchMode}

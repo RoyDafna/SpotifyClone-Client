@@ -29,6 +29,7 @@ export class songsState {
       setCurrentSong: action,
       setContentMode: action,
       searchAlbumSongs: action,
+      getTopTenAlbums: action,
       likeSong: action,
       hideContent: action,
       searchSongsByName: action,
@@ -57,8 +58,19 @@ export class songsState {
     this.contentMode = mode;
   }
 
+  getTopTenAlbums = async () => {
+    const url = "http://localhost:3001/api/albums/topTen";
+    await axios.get(url).then((res) => {
+      this.contentOnScreen = res.data;
+      this.contentMode = "Albums";
+      this.contentOnScreen.map(async (album) => {
+        album.artistName = await this.getArtistNameByID(album.artistID);
+      });
+      this.showContent = true;
+    });
+  };
+
   getArtistNameByID = async (artistID) => {
-    console.log("yep");
     try {
       let name = "";
       const url = "http://localhost:3001/api/artists/" + artistID;
@@ -73,7 +85,7 @@ export class songsState {
 
   searchAlbumsByName = async (albumName) => {
     try {
-      const url = "http://localhost:3001/api/albums/" + albumName;
+      const url = "http://localhost:3001/api/albums/name/" + albumName;
       await axios.get(url).then((res) => {
         this.contentOnScreen = res.data;
         this.contentOnScreen.map(async (album) => {
