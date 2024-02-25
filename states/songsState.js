@@ -11,6 +11,7 @@ export class songsState {
   firstLoginAttempt = true;
   userExists = false;
   likedSongs = [];
+  contentMode = "";
 
   loginOrRegister = true; //true = login, false = register
   searchMode = "";
@@ -20,11 +21,13 @@ export class songsState {
       likedSongs: observable,
       currentSongName: observable,
       searchMode: observable,
+      contentMode: observable,
       currentSongEmbed: observable,
       contentOnScreen: observable,
       playSong: observable,
       showContent: observable,
       setCurrentSong: action,
+      setContentMode: action,
       likeSong: action,
       hideContent: action,
       searchSongsByName: action,
@@ -32,7 +35,8 @@ export class songsState {
       getLikedSongs: action,
       clearLikedSongs: action,
       getTopTenSongs: action,
-      searchArtistByName: action,
+      searchArtistsByName: action,
+      searchArtistSongs: action,
       user: observable,
       firstLoginAttempt: observable,
       userExists: observable,
@@ -46,6 +50,10 @@ export class songsState {
     });
   }
 
+  setContentMode(mode) {
+    this.contentMode = mode;
+  }
+
   isLikedSong(songID) {
     return this.likedSongs.includes(songID);
   }
@@ -55,7 +63,7 @@ export class songsState {
       let url = "";
       if (this.isLikedSong(songID)) {
         url = "http://localhost:3001/api/users/unlikeSong";
-        this.likedSongs.splice(this.likedSongs.indexOf(songID))
+        this.likedSongs.splice(this.likedSongs.indexOf(songID));
       } else {
         url = "http://localhost:3001/api/users/likeSong";
         this.likedSongs.push(songID);
@@ -69,6 +77,18 @@ export class songsState {
   hideContent() {
     this.showContent = false;
   }
+
+  searchArtistSongs = async (artistID) => {
+    try {
+      const url = "http://localhost:3001/api/artists/songs/" + artistID;
+      await axios.get(url).then((res) => {
+        this.contentOnScreen = res.data;
+        this.contentMode = "Songs";
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   getTopTenSongs = async () => {
     try {
@@ -114,7 +134,7 @@ export class songsState {
     }
   };
 
-  searchArtistByName = async (searchTerm) => {
+  searchArtistsByName = async (searchTerm) => {
     try {
       const url = "http://localhost:3001/api/artists?name=" + searchTerm;
       await axios.get(url).then((res) => {
@@ -122,6 +142,7 @@ export class songsState {
         if (res.status.toFixed() == 200) {
           this.contentOnScreen = res.data;
           this.showContent = true;
+          this.contentMode = "Artists";
         }
       });
     } catch (e) {
@@ -137,6 +158,7 @@ export class songsState {
         if (res.status.toFixed() == 200) {
           this.contentOnScreen = res.data;
           this.showContent = true;
+          this.contentMode = "Songs"
         }
       });
     } catch (e) {
@@ -153,6 +175,7 @@ export class songsState {
     this.playSong = false;
     this.likedSongs = [];
     this.searchMode = "";
+    this.contentMode = "";
   }
 
   toggleLoginOrRegister() {
@@ -172,7 +195,8 @@ export class songsState {
           this.user.password = res.data[0].password;
           this.user.id = res.data[0]._id;
           this.getLikedSongs();
-          this.searchMode = "Songs"
+          this.searchMode = "Songs";
+          this.contentMode = "Songs";
         }
         this.firstLoginAttempt = false;
       });

@@ -10,6 +10,8 @@ const Navbar = observer(({ styles, songsStateObj }) => {
           onClick={() => {
             if (songsStateObj.searchMode != "Songs") {
               songsStateObj.setSearchMode("Songs");
+              songsStateObj.setContentMode("Songs");
+
               songsStateObj.hideContent();
             }
           }}
@@ -18,10 +20,14 @@ const Navbar = observer(({ styles, songsStateObj }) => {
         </button>
         <button
           disabled={!songsStateObj.loggedIn}
-          className={songsStateObj.searchMode == "Artists" ? styles.active : ""}
+          className={
+            songsStateObj.searchMode == "Artists" ? styles.active : ""
+          }
           onClick={() => {
             if (songsStateObj.searchMode != "Artists") {
               songsStateObj.setSearchMode("Artists");
+              songsStateObj.setContentMode("Artists");
+
               songsStateObj.hideContent();
             }
           }}
@@ -34,6 +40,7 @@ const Navbar = observer(({ styles, songsStateObj }) => {
           onClick={() => {
             if (songsStateObj.searchMode != "Albums") {
               songsStateObj.setSearchMode("Albums");
+              songsStateObj.setContentMode("Albums");
               songsStateObj.hideContent();
             }
           }}

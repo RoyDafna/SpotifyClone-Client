@@ -3,7 +3,7 @@ import SongEmbed from "../components/SongEmbed";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import SearchBar from "../components/SearchBar";
-import SongList from "../components/SongList";
+import ContentList from "../components/ContentList";
 import Navbar from "../components/Navbar";
 import NavbarStyles from "../Navbar.module.css";
 
@@ -22,7 +22,7 @@ export default function App() {
 
       <SearchBar songsStateObj={songsStateObj} />
       <SongEmbed songsStateObj={songsStateObj} />
-      <SongList songsStateObj={songsStateObj} />
+      <ContentList songsStateObj={songsStateObj} />
     </>
   );
 }

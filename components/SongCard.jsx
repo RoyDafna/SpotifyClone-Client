@@ -6,6 +6,13 @@ const SongCard = observer(({ songDetails, songsStateObj }) => {
     songsStateObj.isLikedSong(songDetails.songID) == true ? "❤️" : "🤍"
   );
 
+  if (
+    (songsStateObj.isLikedSong(songDetails.songID) == true ? "❤️" : "🤍") !=
+    heartIcon
+  ) {
+    setHeartIcon(heartIcon == "❤️" ? "🤍" : "❤️");
+  }
+
   return (
     <>
       <div>
