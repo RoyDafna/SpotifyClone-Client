@@ -174,14 +174,16 @@ export class songsState {
 
   setCurrentSong = async (name, songEmbed, songID) => {
     this.playSong = true;
-    this.currentSongName = name;
-    this.currentSongEmbed = songEmbed;
 
-    try {
-      const url = "http://localhost:3001/api/songs/" + songID;
-      await axios.post(url);
-    } catch (e) {
-      console.log(e);
+    if (name != this.currentSongName) {
+      this.currentSongName = name;
+      this.currentSongEmbed = songEmbed;
+      try {
+        const url = "http://localhost:3001/api/songs/" + songID;
+        await axios.post(url);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
